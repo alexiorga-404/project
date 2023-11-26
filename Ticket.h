@@ -21,9 +21,9 @@ class ticket {
 	teather Teather;
 
 public:
-	ticket() :ID(generator++) {};
+	ticket() :ID(generateRandomID()) {};
 
-	ticket(int row, int seat, movieCateg categ, eventLocation location, event event):ID(generator++) {
+	ticket(int row, int seat, movieCateg categ, eventLocation location, event event) :ID(generateRandomID()) {
 		setRow(row);
 		setSeat(seat);
 		this->Event = event;
@@ -34,7 +34,7 @@ public:
 		location.seatPicked();
 		
 	};
-	ticket(int row, int seat, teather categ, eventLocation location, event event) :ID(generator++) {
+	ticket(int row, int seat, teather categ, eventLocation location, event event) :ID(generateRandomID()){
 		setRow(row);
 		setSeat(seat);
 		this->Event = event;
@@ -44,6 +44,11 @@ public:
 		newTicket();
 		location.seatPicked();
 	};
+	
+	static int generateRandomID() {
+		static int counter = 0;
+		return static_cast<int>(time(nullptr)) + counter++;
+	}
 
 	void newTicket() {
 		IDs[ID - 1] = ID;
@@ -81,8 +86,42 @@ public:
 		this->seat = seat;
 	}
 
+	bool isVIP(){
+		return (movie == VIP);
+	}
+	void printTicketDetails() {
+		cout << "Ticket ID: " << ID << endl;
+		cout << "Event: " << Event.getName() << endl;
+		cout << "Row and seat:" << this->row << " " << this->seat << endl;
+
+	}
+
 	~ticket() {
 		delete[] IDs;
 		IDs = nullptr;
 	};
+
+	bool operator!=(const ticket& anotherOne)//Dj khaleed
+	{
+		return!(this == &anotherOne);
+	}
+
+	friend void operator<<(ostream& console, ticket& Ticket);
+	friend void operator>>(istream& console, ticket& Ticket);
 };
+
+void operator<<(ostream& console, ticket& Ticket) {
+	console << endl << "Row number" << Ticket.getRow();
+	console << endl << "Seat number:" << Ticket.getSeat();
+	
+}
+
+void operator>>(istream& console, ticket& Ticket) {
+	cout << "Enter the Row number: ";
+	console >> Ticket.row;
+
+	cout << "Enter the Seat number: ";
+	console >> Ticket.seat;
+
+	
+}
