@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+
 using namespace std;
 class eventLocation {
 
@@ -117,6 +118,16 @@ public:
 		else {
 			return false;
 		}	
+	}
+
+	void operator=(eventLocation& source) {
+		if (&source == this)
+			return;
+		setRows(source.noRows);
+		setSeats(source.maxSeats);
+		setRemaining(source.availableSeats);
+		setSeatsPerRow(source.seatsPerRow);
+		setName(source.name);
 	}
 
 
