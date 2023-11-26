@@ -1,4 +1,4 @@
-#pragma once#pragma once
+#pragma once
 #include<iostream>
 using namespace std;
 
@@ -28,6 +28,7 @@ bool checkTime(Time myTime) {
 	else
 		return false;
 }
+
 class event {
 
 	
@@ -111,9 +112,40 @@ public:
 
 	
 
+	bool operator==(Time myTime) {
+		if (this->myTime.hour==myTime.hour && this->myTime.minute==myTime.minute) {
+			return true;
+		}
+		else {
+			return false;
+		}
 
+		//return (this->name == prod.name && this->price == prod.price);
+	}
+	void operator=(event& source) {
+		if (&source == this)
+			return;
+		setDate(source.myDate);
+		setTime(source.myTime);
+		setName(source.name);
+	}
+	bool operator>(event& source) {
+		if (this->myDate.year > source.myDate.year)
+			return true;
+		else if (this->myDate.month > source.myDate.month && this->myDate.year == source.myDate.year)
+			return true;
+		else if (this->myDate.day > source.myDate.day && this->myDate.year == source.myDate.year && this->myDate.month == source.myDate.month)
+			return true;
+		return false;
+	}
+	void printEventDetails() const {
+		cout << "Event Details:" << endl;
+		cout << "Name: " << name << endl;
+		cout << "Date: " << myDate.day << ":" << myDate.month << ":" << myDate.year << endl;
+		cout << "Time: " << myTime.hour << ":" << myTime.minute << endl;
+	}
 
-
+	
 };
 void operator<<(ostream& console, event& Event) {
 	console << endl << "Name of event:" << Event.name;
