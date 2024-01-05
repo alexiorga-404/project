@@ -93,7 +93,7 @@ public:
 
 	
 	event() {
-		cout << "Event created succesfully";
+		cout << "Event created succesfully"<<endl;
 	}
 
 	event(date myDate,Time myTime,string name)
@@ -108,7 +108,7 @@ public:
 	}
 
 	friend void operator<<(ostream& console, event& Event);
-	friend void operator>>(istream& console, event& Event);
+	friend istream& operator>>(istream& console, event& Event);
 
 	
 
@@ -153,17 +153,18 @@ void operator<<(ostream& console, event& Event) {
 	console << endl << "Time of event is:"<<Event.myTime.hour<<":"<<Event.myTime.minute;
 }
 
-void operator>>(istream& console, event& Event) {
+istream& operator>>(istream& console, event& Event) {
 	cout << "Enter the name for the event: ";
 	console >> Event.name;
 
 	cout << "Enter the date(day,month,year): ";
-	console >> Event.myDate.day>> Event.myDate.month>> Event.myDate.year;
+	console >> Event.myDate.day >> Event.myDate.month >> Event.myDate.year;
 
 	// Assume name is a string (use char array if needed)
 	cout << "Enter the time: ";
-	console >> Event.myTime.hour>> Event.myTime.minute;
+	console >> Event.myTime.hour >> Event.myTime.minute;
 
-
+	return console;
 }
+
 
