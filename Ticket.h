@@ -34,6 +34,19 @@ public:
 		location.seatPicked();
 		
 	};
+
+	ticket(int row, int seat,  eventLocation location, event event) :ID(generateRandomID()) {
+		setRow(row);
+		setSeat(seat);
+		this->Event = event;
+		this->location = location;
+	
+		IDs = new int[location.getSeats()];
+		newTicket();
+		location.seatPicked();
+
+	};
+
 	ticket(int row, int seat, teather categ, eventLocation location, event event) :ID(generateRandomID()){
 		setRow(row);
 		setSeat(seat);
@@ -89,6 +102,7 @@ public:
 	bool isVIP(){
 		return (movie == VIP);
 	}
+	
 	void printTicketDetails() {
 		cout << "Ticket ID: " << ID << endl;
 		cout << "Event: " << Event.getName() << endl;
@@ -96,6 +110,31 @@ public:
 
 	}
 
+	void saveToFile(const char* filename) const {
+		ofstream file(filename, ios::binary | ios::app);
+		if (file.is_open()) {
+			file.write(reinterpret_cast<const char*>(this), sizeof(ticket));
+			file.close();
+		}
+		else {
+			cerr << "Error opening file for saving: " << filename << std::endl;
+		}
+	}
+	static ticket loadFromFile(const char* filename) {
+		ticket loadedTicket;
+
+		ifstream file(filename, ios::binary);
+		if (file.is_open()) {
+			file.read(reinterpret_cast<char*>(&loadedTicket), sizeof(ticket));
+			file.close();
+		}
+		else {
+			cerr << "Error laoding file " << filename << endl;
+		}
+
+		return loadedTicket;
+	}
+	
 	~ticket() {
 		delete[] IDs;
 		IDs = nullptr;
@@ -106,6 +145,19 @@ public:
 		return!(this == &anotherOne);
 	}
 
+	ticket& operator=(const ticket& source) {
+		// Check for self-assignment
+		if (this == &source)
+			return *this;
+
+		// Perform deep copy of data members
+		this->row = source.row;
+		this->seat = source.seat;
+		// Perform similar deep copies for other data members
+
+		return *this;
+	}
+
 	friend void operator<<(ostream& console, ticket& Ticket);
 	friend void operator>>(istream& console, ticket& Ticket);
 };
@@ -113,6 +165,8 @@ public:
 void operator<<(ostream& console, ticket& Ticket) {
 	console << endl << "Row number" << Ticket.getRow();
 	console << endl << "Seat number:" << Ticket.getSeat();
+	console << endl << "Location:" << Ticket.location;
+	console << endl << "Event details:" << Ticket.Event;
 	
 }
 
