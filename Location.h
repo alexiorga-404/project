@@ -92,7 +92,7 @@ public:
 	}
 
 	eventLocation() {
-		cout << "Location added succesfully";
+		cout << "Location added succesfully"<<endl;
 	}
 
 	eventLocation(int maxSeats, int noRows, int seatsPerRow, char* name)
@@ -109,7 +109,7 @@ public:
 	}
 
 	friend void operator<<(ostream& console, eventLocation& lcoation);
-	friend void operator>>(istream& console, eventLocation& location);
+	friend istream& operator>>(istream& console, eventLocation& location);
 
 	bool operator<(eventLocation location) {
 		if (this->maxSeats<location.maxSeats) {
@@ -138,17 +138,17 @@ void operator<<(ostream& console, eventLocation& location) {
 	console << endl << "Name of lcoations is:" << location.name;
 }
 
-void operator>>(istream& console, eventLocation& location) {
+istream& operator>>(istream& console, eventLocation& location) {
 	cout << "Enter the number of total seats: ";
-	 console>> location.maxSeats;
+	console >> location.maxSeats;
 
 	cout << "Enter the number of total rows: ";
-	console>> location.noRows;
+	console >> location.noRows;
 
 	// Assume name is a string (use char array if needed)
 	cout << "Enter the name of the location and press enter: ";
 	location.name = new char[100];
-	console>> location.name;
+	console >> location.name;
 
-	
+	return console;
 }
