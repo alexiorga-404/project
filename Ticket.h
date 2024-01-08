@@ -1,181 +1,90 @@
-#pragma once
-#include<iostream>
-#include "Eventr.h"
-#include"Location.h"
+
+
+#include <iostream>
+#include <fstream>  // Required for file operations
+#include"Ticket.h"
 using namespace std;
 
-enum movieCateg{normal, VIP};
-enum teather{categ1,categ2,box};
 
-class ticket {
-
-	const int ID;
-	static int generator;// this will be used to generate unique identifieres 
-	int* IDs = nullptr;//store id's
-	
-	int row = 0;
-	int seat = 0;
-	eventLocation location;
-	event Event;
-	movieCateg movie;
-	teather Teather;
-
-public:
-	ticket() :ID(generateRandomID()) {};
-
-	ticket(int row, int seat, movieCateg categ, eventLocation location, event event) :ID(generateRandomID()) {
-		setRow(row);
-		setSeat(seat);
-		this->Event = event;
-		this->location = location;
-		movie = categ;
-		IDs = new int[location.getSeats()];
-		newTicket();
-		location.seatPicked();
-		
-	};
-
-	ticket(int row, int seat,  eventLocation location, event event) :ID(generateRandomID()) {
-		setRow(row);
-		setSeat(seat);
-		this->Event = event;
-		this->location = location;
-	
-		IDs = new int[location.getSeats()];
-		newTicket();
-		location.seatPicked();
-
-	};
-
-	ticket(int row, int seat, teather categ, eventLocation location, event event) :ID(generateRandomID()){
-		setRow(row);
-		setSeat(seat);
-		this->Event = event;
-		this->location = location;
-		Teather = categ;
-		IDs = new int[location.getSeats()];
-		newTicket();
-		location.seatPicked();
-	};
-	
-	static int generateRandomID() {
-		static int counter = 0;
-		return static_cast<int>(time(nullptr)) + counter++;
-	}
-
-	void newTicket() {
-		IDs[ID - 1] = ID;
-	}
-	int getID() {
-		return this->ID;
-	}
-	int getRow() {
-		return this->row;
-	}
-	int getSeat() {
-		return this->seat;
-	}
-	
-	void setRow(int row) {
-		try {
-			if (row < 0)
-				throw exception("wrong input");
-		}
-		catch (const exception& e) {
-			cout << e.what();
-			return;
-		}
-		this->row = row;
-	}
-	void setSeat(int seat) {
-		try {
-			if (seat < 0)
-				throw exception("wrong input");
-		}
-		catch (const exception& e) {
-			cout << e.what();
-			return;
-		}
-		this->seat = seat;
-	}
-
-	bool isVIP(){
-		return (movie == VIP);
-	}
-	
-	void printTicketDetails() {
-		cout << "Ticket ID: " << ID << endl;
-		cout << "Event: " << Event.getName() << endl;
-		cout << "Row and seat:" << this->row << " " << this->seat << endl;
-
-	}
-
-	void saveToFile(const char* filename) const {
-		ofstream file(filename, ios::binary | ios::app);
-		if (file.is_open()) {
-			file.write(reinterpret_cast<const char*>(this), sizeof(ticket));
-			file.close();
-		}
-		else {
-			cerr << "Error opening file for saving: " << filename << std::endl;
-		}
-	}
-	static ticket loadFromFile(const char* filename) {
-		ticket loadedTicket;
-
-		ifstream file(filename, ios::binary);
-		if (file.is_open()) {
-			file.read(reinterpret_cast<char*>(&loadedTicket), sizeof(ticket));
-			file.close();
-		}
-		else {
-			cerr << "Error laoding file " << filename << endl;
-		}
-
-		return loadedTicket;
-	}
-	
-	~ticket() {
-		delete[] IDs;
-		IDs = nullptr;
-	};
-
-	bool operator!=(const ticket& anotherOne)//Dj khaleed
-	{
-		return!(this == &anotherOne);
-	}
-
-	ticket& operator=(const ticket& source) {
-		// Check for self-assignment
-		if (this == &source)
-			return *this;
-
-		// Perform deep copy of data members
-		this->row = source.row;
-		this->seat = source.seat;
-		// Perform similar deep copies for other data members
-
-		return *this;
-	}
-
-	friend void operator<<(ostream& console, ticket& Ticket);
-	friend void operator>>(istream& console, ticket& Ticket);
-};
-
-void operator<<(ostream& console, ticket& Ticket) {
-	console << endl << "Row number" << Ticket.getRow();
-	console << endl << "Seat number:" << Ticket.getSeat();
-	console << endl << "Location:" << Ticket.location;
-	console << endl << "Event details:" << Ticket.Event;
-	
+void displayMenu() {
+    cout << "===== Menu =====" << endl;
+    cout << "1. Buy Ticket" << endl;
+    cout << "2. View Ticket Details" << endl;
+    cout << "3. Save Tickets to File" << endl;
+    cout << "4. Load Tickets from File" << endl;
+    cout << "5. Exit" << endl;
+    cout << "================" << endl;
 }
 
-void operator>>(istream& console, ticket& Ticket) {
-	cout << "Enter the Row number: ";
-	console >> Ticket.row;
 
-	cout << "Enter the Seat number: ";
-	console >> Ticket.seat;
+void menu() {
+    displayMenu();
 
-	
+    ticket Ticket;
+
+    int choice;
+
+    do {
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            Ticket.buyTicket();
+            break;
+        case 2:
+            Ticket.printTicketDetails();
+            break;
+        case 3:
+            Ticket.saveToFile("ticket.dat");
+            break;
+        case 4:
+            Ticket.loadFromFile("ticket.dat");
+            break;
+        case 5:
+            cout << "Exiting the program. Goodbye!" << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+            break;
+        }
+
+    } while (choice != 5);
+
+
+}
+
+int main(int argc, char* argv[]) {
+
+    ticket Ticket;
+
+    menu();
+
+    if (argc == 1) {
+        // No command line arguments provided, interact with the user through the console
+        // Your existing code for console interaction goes here
+    }
+    else if (argc == 2) {
+        // One command line argument provided, assume it is a filename
+        const char* filename = argv[1];
+        ifstream file(filename);
+
+        if (file.is_open()) {
+            // File opened successfully, read input from the file
+            // Your existing code for file input goes here
+            file.close();
+        }
+        else {
+            cout << "Error opening file: " << filename << endl;
+        }
+    }
+    else {
+        cout << "Usage: " << argv[0] << " [filename]" << endl;
+        cout << "If filename is provided, read input from the file; otherwise, interact with the user through the console." << endl;
+    }
+    Ticket.saveToFile("tickets.dat");//save
+    ticket loadTicket = ticket::loadFromFile("tickets.dat");//load
+
+    return 0;
 }
