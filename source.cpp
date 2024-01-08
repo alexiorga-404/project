@@ -31,7 +31,7 @@ void menu() {
 
         switch (choice) {
         case 1:
-            Ticket.buyTicket(Ticket);
+            Ticket.buyTicket();
             break;
         case 2:
             Ticket.printTicketDetails();
