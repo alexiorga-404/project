@@ -10,17 +10,17 @@ public:
     virtual ~TicketBase() {} // Virtual destructor for a base class
 };
 
-// Derived class implementing the pure virtual method
+
 class VIPticket : public TicketBase {
 public:
     // Implementing the pure virtual method
     void printSpecialMessage() const override {
         cout << "This is a VIP ticket. Enjoy the VIP experience!" << endl;
     }
-    // Other VIP-specific methods or properties can be added here
+  
 };
 
-// Modify your 'ticket' class to inherit from 'TicketBase'
+
 class ticket : public TicketBase {
 
 	const int ID;
