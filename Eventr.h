@@ -22,8 +22,8 @@ bool checkDate(date myDate) {
 }
 
 bool checkTime(Time myTime) {
-	if (myTime.hour <= 23 && myTime.hour>= 0
-		&& myTime.minute <=59 && myTime.minute>=0 )
+	if (myTime.hour <= 23 && myTime.hour >= 0
+		&& myTime.minute <= 59 && myTime.minute >= 0)
 		return true;
 	else
 		return false;
@@ -31,7 +31,7 @@ bool checkTime(Time myTime) {
 
 class event {
 
-	
+
 	date myDate;
 	Time myTime;
 	string name = "";
@@ -47,7 +47,7 @@ public:
 		return myTime;
 	}
 
-	string getName() {		
+	string getName() {
 		return name;
 	}
 
@@ -55,10 +55,10 @@ public:
 	void setDate(date myDate) {
 		try {
 			if (!checkDate(myDate))
-				throw exception("wrong date");		
+				throw exception("wrong date");
 		}
 		catch (const exception& e) {
-			cout << e.what();
+			cout << e.what()<<endl;
 			return;
 		}
 		this->myDate = myDate;
@@ -70,33 +70,33 @@ public:
 				throw exception("wrong time");
 		}
 		catch (const exception& e) {
-			cout << e.what();
+			cout << e.what()<<endl;
 			return;
 		}
-		this->myTime=myTime;
+		this->myTime = myTime;
 	}
 
 	void setName(string name) {
-		
-		try{
+
+		try {
 			if (name.length() <= 3 || islower(name[0]))
-				throw exception("wrong date");
+				throw exception("wrong name");
 		}
 		catch (const exception& e) {
-			cout << e.what();
+			cout << e.what()<<endl;
 			return;
 		}
 		this->name = name;
 	}
 
-	
 
-	
+
+
 	event() {
-		cout << "Event created succesfully"<<endl;
+		cout << "Event created succesfully" << endl;
 	}
 
-	event(date myDate,Time myTime,string name)
+	event(date myDate, Time myTime, string name)
 	{
 		setDate(myDate);
 		setTime(myTime);
@@ -104,16 +104,16 @@ public:
 	}
 
 	~event() {
-		cout << "done";
+		
 	}
 
 	friend void operator<<(ostream& console, event& Event);
 	friend istream& operator>>(istream& console, event& Event);
 
-	
+
 
 	bool operator==(Time myTime) {
-		if (this->myTime.hour==myTime.hour && this->myTime.minute==myTime.minute) {
+		if (this->myTime.hour == myTime.hour && this->myTime.minute == myTime.minute) {
 			return true;
 		}
 		else {
@@ -138,6 +138,17 @@ public:
 			return true;
 		return false;
 	}
+
+	event& operator=(const event& other) {
+		if (this != &other) {
+			// Assuming 'name' is a string, you might need to adjust accordingly
+			this->name = other.name;
+			this->myDate = other.myDate;
+			this->myTime = other.myTime;
+		}
+		return *this;
+	}
+
 	void printEventDetails() const {
 		cout << "Event Details:" << endl;
 		cout << "Name: " << name << endl;
@@ -145,12 +156,12 @@ public:
 		cout << "Time: " << myTime.hour << ":" << myTime.minute << endl;
 	}
 
-	
+
 };
 void operator<<(ostream& console, event& Event) {
 	console << endl << "Name of event:" << Event.name;
-	console << endl << "Date of the event is:" << Event.myDate.day<<":"<<Event.myDate.month << ":"<<Event.myDate.year;
-	console << endl << "Time of event is:"<<Event.myTime.hour<<":"<<Event.myTime.minute;
+	console << endl << "Date of the event is:" << Event.myDate.day << ":" << Event.myDate.month << ":" << Event.myDate.year;
+	console << endl << "Time of event is:" << Event.myTime.hour << ":" << Event.myTime.minute;
 }
 
 istream& operator>>(istream& console, event& Event) {
@@ -166,5 +177,4 @@ istream& operator>>(istream& console, event& Event) {
 
 	return console;
 }
-
 
