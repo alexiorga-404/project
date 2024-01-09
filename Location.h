@@ -36,7 +36,7 @@ public:
 	}
 
 	void setSeats(int noSeats) {
-		if(noSeats>0)
+		if (noSeats > 0)
 			maxSeats = noSeats;
 		else {
 			cout << "wrong number";
@@ -48,7 +48,7 @@ public:
 		if (rows > 0 && rows < maxSeats)
 			noRows = rows;
 		else {
-			cout << "wrong number"<<endl;
+			cout << "wrong number" << endl;
 			return;
 		}
 	}
@@ -63,15 +63,19 @@ public:
 	}
 
 	void setName(char* name) {
-		if (strlen(name) < 3)
-		{
-			this->name = new char[strlen(name) + 1];
-			strcpy_s(this->name, strlen(name) + 1, name);
+		
+	
+
+		try {
+			if (strlen(name) < 3)
+				throw exception("wrong location name");
 		}
-		else {
-			cout << "wrong name";
+		catch (const exception& e) {
+			cout << e.what() << endl;
 			return;
 		}
+			this->name = new char[strlen(name) + 1];
+			strcpy_s(this->name, strlen(name) + 1, name);
 	}
 
 	void setRemaining(int seats) {
@@ -92,7 +96,7 @@ public:
 	}
 
 	eventLocation() {
-		cout << "Location added succesfully"<<endl;
+		cout << "Location added succesfully" << endl;
 	}
 
 	eventLocation(int maxSeats, int noRows, int seatsPerRow, char* name)
@@ -112,24 +116,25 @@ public:
 	friend istream& operator>>(istream& console, eventLocation& location);
 
 	bool operator<(eventLocation location) {
-		if (this->maxSeats<location.maxSeats) {
+		if (this->maxSeats < location.maxSeats) {
 			return true;
 		}
 		else {
 			return false;
-		}	
+		}
 	}
 
-	void operator=(eventLocation& source) {
-		if (&source == this)
-			return;
-		setRows(source.noRows);
-		setSeats(source.maxSeats);
-		setRemaining(source.availableSeats);
-		setSeatsPerRow(source.seatsPerRow);
-		setName(source.name);
+	eventLocation& operator=(const eventLocation& source) {
+		if (&source != this)
+		{
+			setRows(source.noRows);
+			setSeats(source.maxSeats);
+			setRemaining(source.availableSeats);
+			setSeatsPerRow(source.seatsPerRow);
+			setName(source.name);
+		}
+		return *this;
 	}
-
 
 };
 void operator<<(ostream& console, eventLocation& location) {
