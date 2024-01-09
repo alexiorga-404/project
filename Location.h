@@ -145,7 +145,7 @@ istream& operator>>(istream& console, eventLocation& location) {
 	cout << "Enter the number of total rows: ";
 	console >> location.noRows;
 
-	// Assume name is a string (use char array if needed)
+	
 	cout << "Enter the name of the location and press enter: ";
 	location.name = new char[100];
 	console >> location.name;
