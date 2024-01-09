@@ -8,7 +8,7 @@ using namespace std;
 
 class readFile {
 public:
-    
+
     ticket readTickeFile(const char* name) {
         ticket Ticket;
 
@@ -18,16 +18,16 @@ public:
             exit(1);
         }
 
-       
-        int row ;
-        int seat ;
+
+        int row;
+        int seat;
         eventLocation location;
         event Event;
         movieCateg categ;
         teather categ2;
 
-        while (file >> row >> seat>>Event>>location) {
-            Ticket=ticket(row, seat, location, Event);
+        while (file >> row >> seat >> Event >> location) {
+            Ticket = ticket(row, seat, location, Event);
         }
         file.close();
 
