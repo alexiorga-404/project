@@ -30,7 +30,7 @@ public:
 		this->location = location;
 		movie = categ;
 		IDs = new int[location.getSeats()];
-		newTicket();
+		//newTicket();
 		location.seatPicked();
 
 	};
@@ -42,7 +42,7 @@ public:
 		this->location = location;
 
 		IDs = new int[location.getSeats()];
-		newTicket();
+		//newTicket();
 		location.seatPicked();
 
 	};
@@ -54,7 +54,7 @@ public:
 		this->location = location;
 		Teather = categ;
 		IDs = new int[location.getSeats()];
-		newTicket();
+		//newTicket();
 		location.seatPicked();
 	};
 
@@ -63,9 +63,9 @@ public:
 		return static_cast<int>(time(nullptr)) + counter++;
 	}
 
-	void newTicket() {
-		IDs[ID - 1] = ID;
-	}
+	//void newTicket() {
+	//	IDs[ID - 1] = ID;
+	//}
 	int getID() {
 		return this->ID;
 	}
@@ -149,18 +149,19 @@ public:
 		 cin >> seat;
 
 		 cout << "Enter the name for the event: ";
-		 cin.ignore(); // Clear the newline character from the input buffer
+		 cin.ignore(); 
 		 cin.getline(eventName, sizeof(eventName));
 
 		 cout << "Enter the date (day month year): ";
-		 cin >> eventDay >> eventMonth >> eventYear;
+		cin >> eventDay >> eventMonth >> eventYear;
 
 		 cout << "Enter the time (hour minute): ";
 		 cin >> eventHour >> eventMinute;
-
+		 
 		 cout << "Enter the name of the location: ";
-		 cin.ignore(); // Clear the newline character from the input buffer
+		 cin.ignore();
 		 cin.getline(locationName, sizeof(locationName));
+		
 
 		// Create a new ticket with the input details
 		eventLocation location;
@@ -195,10 +196,13 @@ public:
 		if (this == &source)
 			return *this;
 
-		// Perform deep copy of data members
+		this->Teather = source.Teather;
+		this->movie = source.movie;
+		this->location = source.location;
+		this->Event = source.Event;
 		this->row = source.row;
 		this->seat = source.seat;
-		// Perform similar deep copies for other data members
+		
 
 		return *this;
 	}
