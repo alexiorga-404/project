@@ -172,10 +172,10 @@ public:
 		Event.setDate({ eventDay, eventMonth, eventYear });
 		Event.setTime({ eventHour, eventMinute });
 
-		// Assume the default category for simplicity
+		
 		movieCateg categ = normal;
 
-		// Create a new ticket and assign it to the existing Ticket instance
+		
 		*this = ticket(row, seat, categ, location, Event);
 
 		 cout << "Ticket purchased successfully." <<  endl;
